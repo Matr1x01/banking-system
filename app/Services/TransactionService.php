@@ -101,7 +101,9 @@ class TransactionService
     $this->transactionJob->insertWithdrawal($user_id, $amount,$fee);
 
     return [
-        'balance' => $balance
+        'message' => 'Successful withdrawal',
+        'status' => Response::HTTP_OK,
+        'data' => ['balance' => $user->balance]
     ];
 }
 
