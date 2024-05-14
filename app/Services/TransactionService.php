@@ -84,7 +84,9 @@ class TransactionService
         $withdrawalRate = 0;
     }
 
-    $deduction = $amount > $freeWithdrawalLimit ? $amount + ($withdrawalRate * ($amount - $freeWithdrawalLimit)) : $amount;  
+    $fee=$amount > $freeWithdrawalLimit ? ($withdrawalRate * ($amount - $freeWithdrawalLimit)) : 0;  
+
+    $deduction = $amount + $fee;
 
     if ($user->balance < $deduction) {
         return [
@@ -96,7 +98,7 @@ class TransactionService
 
     $balance = $user->balance - $deduction;
     $this->transactionJob->updateUserBalance($user_id, $balance);
-    $this->transactionJob->insertWithdrawal($user_id, $amount,$withdrawalRate);
+    $this->transactionJob->insertWithdrawal($user_id, $amount,$fee);
 
     return [
         'balance' => $balance
