@@ -27,11 +27,8 @@ class TransactionController extends Controller
     }
 
     public function deposit(DepositRequest $request){
-        $response=$this->transactionService->deposit($request->user_id,$request->amount);
-        if ($response['status'] == Response::HTTP_BAD_REQUEST) {
-            return JsonResponder::respond($response['message'], Response::HTTP_BAD_REQUEST, $response['data']);
-        }
-        return JsonResponder::respond('Deposit successful', Response::HTTP_OK, $response);
+        $response=$this->transactionService->deposit($request->user_id,$request->amount); 
+        return JsonResponder::respond('Deposit successful', Response::HTTP_OK, []);
     }
  
     public function getWithdrawls()
