@@ -37,7 +37,7 @@ class TransactionController extends Controller
         return JsonResponder::respond('User withdrawls retrieved successfully', Response::HTTP_OK, $response);
     }
 
-    public function withdraw(WithdrawalRequest $request)
+    public function withdrawl(WithdrawalRequest $request)
     {
         $response = $this->transactionService->withdraw($request->user_id,$request->amount);
         return JsonResponder::respond('Withdraw successful', Response::HTTP_OK, []);

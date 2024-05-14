@@ -19,12 +19,7 @@ class TransactionService
             'balance' => $user->balance,
             'transactions' => $user->transactions
         ];
-    }
-
-    public function transactionJob()
-    {
-        // Perform any necessary initialization or setup for the transaction job
-    }
+    } 
 
     public function getDeposits()
     {
@@ -101,7 +96,7 @@ class TransactionService
 
     $balance = $user->balance - $deduction;
     $this->transactionJob->updateUserBalance($user_id, $balance);
-    $this->transactionJob->insertWithdrawal($user_id, $amount);
+    $this->transactionJob->insertWithdrawal($user_id, $amount,$withdrawalRate);
 
     return [
         'balance' => $balance

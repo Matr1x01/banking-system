@@ -22,7 +22,7 @@ class TransactionJob
     }
 
     public function getUserById($user_id){
-        return User::query()->where('id',$user_id);
+        return User::query()->where('id',$user_id)->first();
     }
 
     public function updateUserBalance($user_id,$balance){
@@ -35,7 +35,9 @@ class TransactionJob
             ->insert([
                 'user_id'=>$user_id,
                 'amount'=>$amount,
-                'transaction_type'=>TransactionType::DEPOSIT
+                'fee'=>0,
+                'transaction_type'=>TransactionType::DEPOSIT,
+                'date'=>now()
             ]);
     }
 
@@ -47,12 +49,14 @@ class TransactionJob
             ->get();
     }
 
-    public function insertWithdrawal($user_id,$amount){
+    public function insertWithdrawal($user_id,$amount,$fee){
         return Transactions::query()
             ->insert([
                 'user_id'=>$user_id,
                 'amount'=>$amount,
-                'transaction_type'=>TransactionType::WITHDRAWAL
+                'transaction_type'=>TransactionType::WITHDRAWAL,
+                'fee'=>$fee,
+                'date'=>now()
             ]);
     }
 
@@ -63,7 +67,7 @@ class TransactionJob
             ->whereMonth('date',date('m'))
             ->sum('amount');
     }
-    
+
     public function getTotalWithdrawnAmount($user_id){
         return Transactions::query()
             ->where('user_id',$user_id)
